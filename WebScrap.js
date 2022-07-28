@@ -11,6 +11,7 @@ const url = "https://www.praiagrande.sp.gov.br/pgnoticias/noticias/assunto_notic
         page.click('.link_pag')
     ]);
     const extractedText = await page.$eval('#divCadaNoticia', (el) => el.innerText);
+    console.log(extractedText);
     FindPat(page, extractedText)
 })();
 
