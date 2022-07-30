@@ -1,9 +1,9 @@
-const pup = require('puppeteer');
-const rwClient = require("./TwitterClient.js")
+import pup from 'puppeteer'
+import rw from './TwitterClient.js'
 const url = "https://www.praiagrande.sp.gov.br/pgnoticias/noticias/assunto_noticia.asp?idAssunto=52";
 
 (async function () {
-    const browser = await pup.launch({ headless: false });
+    const browser = await pup.launch({ args: ['--no-sandbox'], headless: false});
     const page = await browser.newPage();
     await page.goto(url);
     await Promise.all([
@@ -11,7 +11,6 @@ const url = "https://www.praiagrande.sp.gov.br/pgnoticias/noticias/assunto_notic
         page.click('.link_pag')
     ]);
     const extractedText = await page.$eval('#divCadaNoticia', (el) => el.innerText);
-    console.log(extractedText);
     FindPat(page, extractedText)
 })();
 
@@ -21,6 +20,6 @@ function FindPat(page, txt) {
         console.log("Sem Pat")
     } else {
         const OkPAT = page.url();
-        rwClient.v2.tweet(`Nova vaga no PAT, da uma olhada e boa sorte! ${OkPAT}`);
+        rw.v2.tweet(`Nova vaga no PAT, da uma olhada e boa sorte! ${OkPAT}`);
     }
 }
