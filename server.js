@@ -31,6 +31,7 @@ function FindPat(page, txt) {
     const find_pat = txt.match('/PAT');
     if (find_pat == null) {
         console.log("Sem Pat")
+        client.end();
     } else {
       const OkPAT = page.url();
       client.query(`SELECT * FROM url ORDER BY ID DESC LIMIT 1`, (err, res) => {
