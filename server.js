@@ -6,7 +6,12 @@ import { config } from 'dotenv';
 config();
 
 const client = new pg.Client({
-  connectionString: process.env.db,
+  connectionString: process.env.uri,
+  host: process.env.host,
+  database: process.env.dbase,
+  user: process.env.user,
+  port: process.env.port,
+  password: process.env.pass,
   ssl: {
     rejectUnauthorized: false
   }
