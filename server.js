@@ -4,9 +4,8 @@ import pg from 'pg';
 import { config } from 'dotenv';
 
 config();
-const connectionString = `postgresql://${process.env.user}:${process.env.pass}@${process.env.host}:${process.env.port}/${process.env.dbase}`
 const client = new pg.Client({
-  connectionString: connectionString,
+  connectionString: process.env.uri,
   ssl: {
     rejectUnauthorized: false
   }
