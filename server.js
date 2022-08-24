@@ -1,9 +1,12 @@
 import pup from 'puppeteer'
 import rw from './TwitterClient.js'
 import pg from 'pg';
+import { config } from 'dotenv';
+
+config();
 
 const client = new pg.Client({
-  connectionString: "postgres://kmifvglvbavqbt:38177724368a093646512430c1e907b04affa8b9a1f153687edde12577c28ebf@ec2-18-208-55-135.compute-1.amazonaws.com:5432/dbp9ikdfgt8i0s",
+  connectionString: process.env.db,
   ssl: {
     rejectUnauthorized: false
   }
@@ -31,7 +34,6 @@ function FindPat(page, txt) {
     const find_pat = txt.match('/PAT');
     if (find_pat == null) {
         console.log("Sem Pat")
-        client.end();
     } else {
       const OkPAT = page.url();
       client.query(`SELECT * FROM url ORDER BY ID DESC LIMIT 1`, (err, res) => {
@@ -39,7 +41,6 @@ function FindPat(page, txt) {
         if(res.rows[0].url != OkPAT){
           client.query(`INSERT INTO url(url) VALUES ('${OkPAT}');`, (err, res) => {
             if (err) throw err;
-            client.end();
           });
           rw.v2.tweet(`Nova vaga no PAT, da uma olhada e boa sorte! ${OkPAT}`)
         }else{
@@ -49,4 +50,3 @@ function FindPat(page, txt) {
       });
     }
 }
-
